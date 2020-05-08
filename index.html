@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style type="text/css">
+    #navigator {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+  <title>Serialize</title>
+</head>
+<body>
+<h1>Copy the result below, please</h1>
+<textarea id="navigator"></textarea>
+</body>
+
+<script type="text/javascript">
+  function serialize (object) {
+    var type = typeof object;
+    if (object === null) {
+      return '"nullValue"';
+    }
+    if (type == 'string' || type === 'number' || type === 'boolean') {
+      return '"' + object + '"';
+    }
+    else if (type === 'function') {
+      return '"functionValue"';
+    }
+    else if (type === 'object') {
+      var output = '{';
+      for (var item in object) {
+        try {
+          if (item !== 'enabledPlugin') {
+            output += '"' + item + '":' + serialize(object[item]) + ',';
+          }
+        }
+        catch (e) {
+        }
+      }
+      return output.replace(/\,$/, '') + '}';
+    }
+    else if (type === 'undefined') {
+      return '"undefinedError"';
+    }
+    else {
+      return '"unknownTypeError"';
+    }
+  };
+  document.getElementById('navigator').innerText = serialize(navigator);
+</script>
+
+</html>
